@@ -1,0 +1,37 @@
+{
+  "componentName": "wb-vnesheconombank",
+  "version": "2.15.1505.147-1128",
+  "component": {
+    "projectKey": "WB",
+    "technical": true,
+    "componentVersionFormat": {
+      "lineVersionFormat": "Line.$major.$minor",
+      "majorVersionFormat": "$major.$minor",
+      "releaseVersionFormat": "$major.$minor.$service-$fix",
+      "buildVersionFormat": "$major.$minor.$service.$fix-$build"
+
+    },
+    "customerInfo": {
+      "displayName": "VneshEconomBank Web Banking",
+      "versionPrefix": "vnesheconombank",
+      "versionFormat": "$versionPrefix-$baseVersionFormat"
+    }
+  },
+  "subComponents": [
+    {
+      "componentName": "WB",
+      "version": "2.15.1505",
+      "component": {
+        "projectKey": "WB",
+        "componentVersionFormat": {
+          "majorVersionFormat": "$major.$minor",
+          "releaseVersionFormat": "$major.$minor.$service"
+        },
+        "customerInfo": {
+          "versionFormat": "$versionPrefix-$baseVersionFormat"
+        }
+      },
+      "subComponents": []
+    }
+  ]
+}

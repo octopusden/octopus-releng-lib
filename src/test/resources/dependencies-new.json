@@ -1,0 +1,36 @@
+{
+  "componentName": "app-testcomponent",
+  "version": "2.15.1505.147-1128",
+  "component": {
+    "projectKey": "APP",
+    "technical": true,
+    "componentVersionFormat": {
+      "lineVersionFormat": "Line.$major.$minor",
+      "majorVersionFormat": "$major.$minor",
+      "releaseVersionFormat": "$major.$minor.$service-$fix",
+      "buildVersionFormat": "$major.$minor.$service.$fix-$build"
+    },
+    "displayName": "TestComponent Application",
+    "componentInfo": {
+      "versionPrefix": "testcomponent",
+      "versionFormat": "$versionPrefix-$baseVersionFormat"
+    }
+  },
+  "subComponents": [
+    {
+      "componentName": "APP",
+      "version": "2.15.1505",
+      "component": {
+        "projectKey": "APP",
+        "componentVersionFormat": {
+          "majorVersionFormat": "$major.$minor",
+          "releaseVersionFormat": "$major.$minor.$service"
+        },
+        "componentInfo": {
+          "versionFormat": "$versionPrefix-$baseVersionFormat"
+        }
+      },
+      "subComponents": []
+    }
+  ]
+}
