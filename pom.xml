@@ -17,6 +17,12 @@
         <spek.version>2.0.9</spek.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:git://github.com/octopusden/octopus-releng-lib.git</connection>
+        <developerConnection>scm:git:ssh://github.com:octopusden/octopus-releng-lib.git</developerConnection>
+        <url>https://github.com/octopusden/octopus-releng-lib/tree/main</url>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
