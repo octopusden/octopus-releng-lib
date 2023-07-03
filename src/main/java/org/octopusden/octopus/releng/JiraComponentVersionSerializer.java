@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import org.octopusden.octopus.releng.dto.ComponentVersion;
 import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
+import org.octopusden.octopus.releng.utils.VersionNamesHelper;
 import org.octopusden.releng.versions.ComponentVersionFormat;
 import org.octopusden.releng.versions.KotlinVersionFormatter;
 import org.octopusden.releng.versions.VersionFormatter;
@@ -104,7 +105,7 @@ public class JiraComponentVersionSerializer {
 
         ComponentVersionFormat versionFormat = ComponentVersionFormat.create(majorVersionFormat, releaseVersionFormat);
 
-        VersionFormatter versionFormatter = new KotlinVersionFormatter();
+        VersionFormatter versionFormatter = new KotlinVersionFormatter(VersionNamesHelper.INSTANCE);
         if (!versionFormatter.matchesFormat(versionFormat.getReleaseVersionFormat(), releaseVersion)) {
             throw new IllegalArgumentException(String.format("In module %s unable to parse  version %s. Should be in format %s", projectKey, releaseVersion,
                     releaseVersionFormat));

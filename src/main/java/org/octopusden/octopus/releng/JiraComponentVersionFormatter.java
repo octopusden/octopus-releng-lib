@@ -3,14 +3,16 @@ package org.octopusden.octopus.releng;
 import org.octopusden.octopus.releng.dto.ComponentInfo;
 import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
+import org.octopusden.octopus.releng.utils.VersionNamesHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.octopusden.releng.versions.IVersionInfo;
 import org.octopusden.releng.versions.KotlinVersionFormatter;
-import org.octopusden.releng.versions.NumericVersion;
+import org.octopusden.releng.versions.NumericVersionFactory;
 import org.octopusden.releng.versions.VersionFormatter;
-import org.apache.commons.lang3.StringUtils;
 
 public class JiraComponentVersionFormatter {
-    private final VersionFormatter versionFormatter = new KotlinVersionFormatter();
+    private final VersionFormatter versionFormatter = new KotlinVersionFormatter(VersionNamesHelper.INSTANCE);
+    private final NumericVersionFactory numericVersionFactory = new NumericVersionFactory(VersionNamesHelper.INSTANCE);
 
     public String getReleaseVersion(JiraComponentVersion jiraComponentVersion) {
         return formatReleaseVersionFormat(jiraComponentVersion, jiraComponentVersion.getVersion());
@@ -98,22 +100,22 @@ public class JiraComponentVersionFormatter {
 
     public String formatMajorVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
         String majorVersionFormat = jiraComponentVersion.getComponent().getComponentVersionFormat().getMajorVersionFormat();
-        return format(jiraComponentVersion, majorVersionFormat, NumericVersion.parse(version));
+        return format(jiraComponentVersion, majorVersionFormat, numericVersionFactory.create(version));
     }
 
     public String formatReleaseVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
         String releaseVersionFormat = jiraComponentVersion.getComponent().getComponentVersionFormat().getReleaseVersionFormat();
-        return format(jiraComponentVersion, releaseVersionFormat, NumericVersion.parse(version));
+        return format(jiraComponentVersion, releaseVersionFormat, numericVersionFactory.create(version));
     }
 
     public String formatBuildVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
         String buildVersionFormat = getBuildVersionFormat(jiraComponentVersion);
-        return format(jiraComponentVersion, buildVersionFormat, NumericVersion.parse(version));
+        return format(jiraComponentVersion, buildVersionFormat, numericVersionFactory.create(version));
     }
 
     public String formatLineVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
         String lineVersionFormat = getLineVersionFormat(jiraComponentVersion);
-        return format(jiraComponentVersion, lineVersionFormat, NumericVersion.parse(version));
+        return format(jiraComponentVersion, lineVersionFormat, numericVersionFactory.create(version));
     }
 
     public String getBuildVersionFormat(JiraComponentVersion jiraComponentVersion) {

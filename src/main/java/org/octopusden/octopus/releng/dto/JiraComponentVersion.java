@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.octopusden.octopus.releng.JiraComponentVersionFormatter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.octopusden.octopus.releng.utils.VersionNamesHelper;
+import org.octopusden.releng.versions.VersionNames;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
