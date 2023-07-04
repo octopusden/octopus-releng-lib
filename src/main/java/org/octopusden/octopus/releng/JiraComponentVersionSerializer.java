@@ -8,11 +8,11 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import org.octopusden.octopus.releng.dto.ComponentVersion;
 import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
-import org.octopusden.octopus.releng.utils.VersionNamesHelper;
 import org.octopusden.releng.versions.ComponentVersionFormat;
 import org.octopusden.releng.versions.KotlinVersionFormatter;
 import org.octopusden.releng.versions.VersionFormatter;
 import org.apache.commons.lang3.Validate;
+import org.octopusden.releng.versions.VersionNames;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -20,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JiraComponentVersionSerializer {
+
+    private final VersionNames versionNames;
+
+    public JiraComponentVersionSerializer(VersionNames versionNames) {
+        this.versionNames = versionNames;
+    }
 
     public String serialize(JiraComponentVersion jiraComponentVersion) throws JsonProcessingException {
         return serialize(jiraComponentVersion, false);
@@ -40,7 +46,7 @@ public class JiraComponentVersionSerializer {
         }
 
         SimpleModule module = new SimpleModule();
-        module.addDeserializer(JiraComponentVersion.class, new JiraComponentVersionDeserializer());
+        module.addDeserializer(JiraComponentVersion.class, new JiraComponentVersionDeserializer(versionNames));
         objectMapper.registerModule(module);
 
         return objectMapper;
@@ -105,7 +111,7 @@ public class JiraComponentVersionSerializer {
 
         ComponentVersionFormat versionFormat = ComponentVersionFormat.create(majorVersionFormat, releaseVersionFormat);
 
-        VersionFormatter versionFormatter = new KotlinVersionFormatter(VersionNamesHelper.INSTANCE);
+        VersionFormatter versionFormatter = new KotlinVersionFormatter(versionNames);
         if (!versionFormatter.matchesFormat(versionFormat.getReleaseVersionFormat(), releaseVersion)) {
             throw new IllegalArgumentException(String.format("In module %s unable to parse  version %s. Should be in format %s", projectKey, releaseVersion,
                     releaseVersionFormat));
@@ -118,7 +124,11 @@ public class JiraComponentVersionSerializer {
         }
 
         JiraComponent jiraComponent = new JiraComponent(projectKey, "", versionFormat, null, false);
-        return new JiraComponentVersion(ComponentVersion.create(componentName, releaseVersion), jiraComponent);
+        JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(versionNames);
+        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
+                .componentVersion(ComponentVersion.create(componentName, releaseVersion))
+                .component(jiraComponent)
+                .build();
     }
 
     boolean isValidJSON(final String json) {

@@ -5,17 +5,24 @@ import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
 import org.octopusden.releng.versions.ComponentVersionFormat;
 import org.junit.jupiter.api.Test;
+import org.octopusden.releng.versions.VersionNames;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.octopusden.octopus.releng.JiraComponentVersionProvider.getJiraComponentVersion;
-import static org.junit.jupiter.api.Assertions.*;
 
 class JiraComponentVersionFormatterTest {
-    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion();
-    private final JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter();
+
+    private static final VersionNames VERSION_NAMES = new VersionNames(
+            "serviceBranch", "service", "minor"
+    );
+    private final JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(VERSION_NAMES);
+    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter);
 
     @Test
     void testGetJiraComponentVersion() {
-        assertEquals("testcomponent-2.15.1505.147-1128", jiraComponentVersion.getBuildVersion());
+        assertEquals("testcomponent-2.15.1505.147-1128", jiraComponentVersion.buildVersion);
     }
 
     @Test
@@ -102,6 +109,6 @@ class JiraComponentVersionFormatterTest {
                 null, null);
         JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true);
         ComponentVersion componentVersion = ComponentVersion.create("c1", "version");
-        return new JiraComponentVersion(componentVersion, jiraComponent);
+        return JiraComponentVersion.builder(jiraComponentVersionFormatter).componentVersion(componentVersion).component(jiraComponent).build();
     }
 }
