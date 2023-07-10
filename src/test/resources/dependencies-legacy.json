@@ -1,8 +1,8 @@
 {
-  "componentName": "wb-vnesheconombank",
+  "componentName": "app-testcomponent",
   "version": "2.15.1505.147-1128",
   "component": {
-    "projectKey": "WB",
+    "projectKey": "APP",
     "technical": true,
     "componentVersionFormat": {
       "lineVersionFormat": "Line.$major.$minor",
@@ -12,17 +12,17 @@
 
     },
     "customerInfo": {
-      "displayName": "VneshEconomBank Web Banking",
-      "versionPrefix": "vnesheconombank",
+      "displayName": "TestComponent Application",
+      "versionPrefix": "testcomponent",
       "versionFormat": "$versionPrefix-$baseVersionFormat"
     }
   },
   "subComponents": [
     {
-      "componentName": "WB",
+      "componentName": "APP",
       "version": "2.15.1505",
       "component": {
-        "projectKey": "WB",
+        "projectKey": "APP",
         "componentVersionFormat": {
           "majorVersionFormat": "$major.$minor",
           "releaseVersionFormat": "$major.$minor.$service"

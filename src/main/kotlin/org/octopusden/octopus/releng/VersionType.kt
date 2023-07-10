@@ -7,7 +7,7 @@ enum class VersionType(val name2Display: String, val action: String, val column:
         override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.buildVersion
     },
     RC("Release Candidate", "rc", "RCVERSION") {
-        override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.rcVersion
+        override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.rCversion
     },
     RELEASE("Release", "release", "RELEASE_VERSION") {
         override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.releaseVersion;

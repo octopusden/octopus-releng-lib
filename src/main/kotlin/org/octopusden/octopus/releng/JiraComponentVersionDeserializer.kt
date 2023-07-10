@@ -9,8 +9,11 @@ import org.octopusden.octopus.releng.dto.ComponentVersion
 import org.octopusden.octopus.releng.dto.JiraComponent
 import org.octopusden.octopus.releng.dto.JiraComponentVersion
 import org.octopusden.releng.versions.ComponentVersionFormat
+import org.octopusden.releng.versions.VersionNames
 
-class JiraComponentVersionDeserializer : JsonDeserializer<JiraComponentVersion>() {
+class JiraComponentVersionDeserializer(
+    private val versionNames: VersionNames
+): JsonDeserializer<JiraComponentVersion>() {
 
     override fun deserialize(jsonParser: JsonParser, context: DeserializationContext): JiraComponentVersion {
         val node: JsonNode = jsonParser.codec!!.readTree(jsonParser)
@@ -21,9 +24,10 @@ class JiraComponentVersionDeserializer : JsonDeserializer<JiraComponentVersion>(
     fun getJiraComponentVersion(node: JsonNode): JiraComponentVersion {
         val componentVersion = getComponentVersion(node)
         val jiraComponent = getJiraComponent(node)
-
-        val jiraComponentVersion = JiraComponentVersion(componentVersion, jiraComponent)
-        return jiraComponentVersion
+        val jiraComponentVersionFormatter = JiraComponentVersionFormatter(versionNames)
+        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
+            .componentVersion(componentVersion)
+            .component(jiraComponent).build()
     }
 
     private fun getComponentVersion(node: JsonNode): ComponentVersion? {
