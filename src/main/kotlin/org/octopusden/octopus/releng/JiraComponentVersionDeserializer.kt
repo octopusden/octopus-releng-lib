@@ -13,7 +13,7 @@ import org.octopusden.releng.versions.VersionNames
 
 class JiraComponentVersionDeserializer(
     private val versionNames: VersionNames
-): JsonDeserializer<JiraComponentVersion>() {
+) : JsonDeserializer<JiraComponentVersion>() {
 
     override fun deserialize(jsonParser: JsonParser, context: DeserializationContext): JiraComponentVersion {
         val node: JsonNode = jsonParser.codec!!.readTree(jsonParser)
@@ -25,14 +25,12 @@ class JiraComponentVersionDeserializer(
         val componentVersion = getComponentVersion(node)
         val jiraComponent = getJiraComponent(node)
         val jiraComponentVersionFormatter = JiraComponentVersionFormatter(versionNames)
-        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
-            .componentVersion(componentVersion)
-            .component(jiraComponent).build()
+        return JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter)
     }
 
     private fun getComponentVersion(node: JsonNode): ComponentVersion? {
-        val searchNode = if (node.get("componentVersion") != null) {
-            node.get("componentVersion")
+        val searchNode = if (node.get(COMPONENT_VERSION) != null) {
+            node.get(COMPONENT_VERSION)
         } else {
             node
         }
@@ -59,11 +57,11 @@ class JiraComponentVersionDeserializer(
     }
 
     fun getJiraComponent(parentNode: JsonNode): JiraComponent? {
-        if (!parentNode.has("component")) {
+        if (!parentNode.has(COMPONENT)) {
             return null
         }
 
-        val node = parentNode.get("component")
+        val node = parentNode.get(COMPONENT)
         assert(node.isContainerNode)
 
         val projectKeyNode = getStringNode(node, "projectKey")
@@ -71,15 +69,21 @@ class JiraComponentVersionDeserializer(
         val componentInfo = getComponentInfo(node)
         val technical = getBooleanNode(node, "technical")
 
-        return JiraComponent(projectKeyNode.toString(), getDisplayName(node), componentVersionFormat, componentInfo, technical)
+        return JiraComponent(
+            projectKeyNode.toString(),
+            getDisplayName(node),
+            componentVersionFormat,
+            componentInfo,
+            technical
+        )
 
     }
 
     fun getComponentVersionFormat(parentNode: JsonNode): ComponentVersionFormat? {
-        if (!parentNode.has("componentVersionFormat")) {
+        if (!parentNode.has(COMPONENT_VERSION_FORMAT)) {
             return null
         }
-        val node = parentNode.get("componentVersionFormat")
+        val node = parentNode.get(COMPONENT_VERSION_FORMAT)
         assert(node.isContainerNode)
 
         val majorVersionFormat = getStringNode(node, "majorVersionFormat")
@@ -87,14 +91,19 @@ class JiraComponentVersionDeserializer(
         val buildVersionFormat = getStringNode(node, "buildVersionFormat")
         val lineVersionFormat = getStringNode(node, "lineVersionFormat")
 
-        return ComponentVersionFormat.create(majorVersionFormat, releaseVersionFormat, buildVersionFormat, lineVersionFormat)
+        return ComponentVersionFormat.create(
+            majorVersionFormat,
+            releaseVersionFormat,
+            buildVersionFormat,
+            lineVersionFormat
+        )
     }
 
     fun getComponentInfo(parentNode: JsonNode): ComponentInfo? {
         val componentInfoNode = if (parentNode.has("componentInfo")) {
             parentNode.get("componentInfo")
         } else {
-            parentNode.get("customerInfo")
+            parentNode.get(CUSTOMER_INFO)
         }
         componentInfoNode ?: return null;
 
@@ -105,15 +114,23 @@ class JiraComponentVersionDeserializer(
     }
 
     fun getDisplayName(node: JsonNode): String? {
-        if (node.has("displayName")) {
-            return getStringNode(node, "displayName")
+        if (node.has(DISPLAY_NAME)) {
+            return getStringNode(node, DISPLAY_NAME)
         }
-        if (node.has("customerInfo")) {
-            val customerInfoNode = node.get("customerInfo")
-            if (customerInfoNode.has("displayName")) {
-                return customerInfoNode.get("displayName").asText()
+        if (node.has(CUSTOMER_INFO)) {
+            val customerInfoNode = node.get(CUSTOMER_INFO)
+            if (customerInfoNode.has(DISPLAY_NAME)) {
+                return customerInfoNode.get(DISPLAY_NAME).asText()
             }
         }
         return ""
+    }
+
+    companion object {
+        private const val COMPONENT = "component"
+        private const val COMPONENT_VERSION_FORMAT = "componentVersionFormat"
+        private const val COMPONENT_VERSION = "componentVersion"
+        private const val CUSTOMER_INFO = "customerInfo"
+        private const val DISPLAY_NAME = "displayName"
     }
 }

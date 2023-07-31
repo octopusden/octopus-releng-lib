@@ -32,7 +32,7 @@ public class JiraComponentVersionFormatter {
     }
 
     public String getLineVersion(JiraComponentVersion jiraComponentVersion) {
-        return getLineVersion(jiraComponentVersion.component, jiraComponentVersion.version);
+        return getLineVersion(jiraComponentVersion.getComponent(), jiraComponentVersion.getVersion());
     }
 
     public String getLineVersion(JiraComponent jiraComponent, String version) {
@@ -57,7 +57,7 @@ public class JiraComponentVersionFormatter {
     }
 
     public boolean matchesReleaseVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
-        return matchesReleaseVersionFormat(jiraComponentVersion.component, version, true);
+        return matchesReleaseVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
 
     public boolean matchesReleaseVersionFormat(JiraComponent jiraComponent, String version) {
@@ -70,11 +70,11 @@ public class JiraComponentVersionFormatter {
     }
 
     public boolean matchesMajorVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
-        return matchesMajorVersionFormat(jiraComponentVersion.component, version, true);
+        return matchesMajorVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
 
     public boolean matchesBuildVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
-        return matchesBuildVersionFormat(jiraComponentVersion.component, version, true);
+        return matchesBuildVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
 
     public boolean matchesBuildVersionFormat(JiraComponent jiraComponent, String version, boolean strict) {
@@ -92,12 +92,12 @@ public class JiraComponentVersionFormatter {
     }
 
     public boolean matchesAny(JiraComponentVersion jiraComponentVersion, String version) {
-        return matchesAny(jiraComponentVersion.component, version, true);
+        return matchesAny(jiraComponentVersion.getComponent(), version, true);
     }
 
 
     public boolean matchesAny(JiraComponentVersion jiraComponentVersion, String version, boolean strict) {
-        return matchesAny(jiraComponentVersion.component, version, strict);
+        return matchesAny(jiraComponentVersion.getComponent(), version, strict);
     }
 
     public boolean matchesAny(JiraComponent jiraComponent, String version, boolean strict) {
@@ -107,7 +107,7 @@ public class JiraComponentVersionFormatter {
     }
 
     public boolean matchesRCVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
-        return matchesRCVersionFormat(jiraComponentVersion.component, version, true);
+        return matchesRCVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
 
     public boolean matchesRCVersionFormat(JiraComponent jiraComponent, String version, boolean strict) {
