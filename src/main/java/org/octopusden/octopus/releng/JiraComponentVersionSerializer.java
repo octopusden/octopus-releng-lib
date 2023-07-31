@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import org.apache.commons.lang3.Validate;
 import org.octopusden.octopus.releng.dto.ComponentVersion;
 import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
 import org.octopusden.releng.versions.ComponentVersionFormat;
 import org.octopusden.releng.versions.KotlinVersionFormatter;
 import org.octopusden.releng.versions.VersionFormatter;
-import org.apache.commons.lang3.Validate;
 import org.octopusden.releng.versions.VersionNames;
 
 import java.io.IOException;
@@ -125,10 +125,11 @@ public class JiraComponentVersionSerializer {
 
         JiraComponent jiraComponent = new JiraComponent(projectKey, "", versionFormat, null, false);
         JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(versionNames);
-        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
-                .componentVersion(ComponentVersion.create(componentName, releaseVersion))
-                .component(jiraComponent)
-                .build();
+        return new JiraComponentVersion(
+                ComponentVersion.create(componentName, releaseVersion),
+                jiraComponent,
+                jiraComponentVersionFormatter
+        );
     }
 
     boolean isValidJSON(final String json) {

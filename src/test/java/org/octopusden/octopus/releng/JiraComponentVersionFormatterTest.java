@@ -22,7 +22,7 @@ class JiraComponentVersionFormatterTest {
 
     @Test
     void testGetJiraComponentVersion() {
-        assertEquals("testcomponent-2.15.1505.147-1128", jiraComponentVersion.buildVersion);
+        assertEquals("testcomponent-2.15.1505.147-1128", jiraComponentVersion.getBuildVersion());
     }
 
     @Test
@@ -109,6 +109,10 @@ class JiraComponentVersionFormatterTest {
                 null, null);
         JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true);
         ComponentVersion componentVersion = ComponentVersion.create("c1", "version");
-        return JiraComponentVersion.builder(jiraComponentVersionFormatter).componentVersion(componentVersion).component(jiraComponent).build();
+        return new JiraComponentVersion(
+                componentVersion,
+                jiraComponent,
+                jiraComponentVersionFormatter
+        );
     }
 }

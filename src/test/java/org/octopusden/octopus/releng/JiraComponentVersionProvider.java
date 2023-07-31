@@ -14,10 +14,7 @@ public class JiraComponentVersionProvider {
         ComponentInfo componentInfo = new ComponentInfo("testcomponent", "$versionPrefix-$baseVersionFormat");
         JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true);
         ComponentVersion componentVersion = ComponentVersion.create("app-testcomponent", "2.15.1505.147-1128");
-        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
-                .componentVersion(componentVersion)
-                .component(jiraComponent)
-                .build();
+        return new JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter);
     }
 
     public static JiraComponentVersion getJiraComponentVersionWithoutLineVersionFormat(JiraComponentVersionFormatter jiraComponentVersionFormatter) {
@@ -26,9 +23,10 @@ public class JiraComponentVersionProvider {
         ComponentInfo componentInfo = new ComponentInfo("testcomponent", "$versionPrefix-$baseVersionFormat");
         JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true);
         ComponentVersion componentVersion = ComponentVersion.create("app-testcomponent", "2.15.1505.147-1128");
-        return JiraComponentVersion.builder(jiraComponentVersionFormatter)
-                .componentVersion(componentVersion)
-                .component(jiraComponent)
-                .build();
+        return new JiraComponentVersion(
+                componentVersion,
+                jiraComponent,
+                jiraComponentVersionFormatter
+        );
     }
 }
