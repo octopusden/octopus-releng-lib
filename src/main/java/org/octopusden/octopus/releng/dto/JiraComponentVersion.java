@@ -164,9 +164,9 @@ public class JiraComponentVersion {
     public String toString() {
         return "JiraComponentVersion{" +
                 "componentVersion=" + componentVersion +
-                ", minorVersion='" + minorVersion + '\'' +
-                ", releaseVersion='" + releaseVersion + '\'' +
-                ", buildVersion='" + buildVersion + '\'' +
+                ", minorVersion='" + getMajorVersion() + '\'' +
+                ", releaseVersion='" + getReleaseVersion() + '\'' +
+                ", buildVersion='" + getBuildVersion() + '\'' +
                 '}';
     }
 }
