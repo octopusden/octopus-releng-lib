@@ -1,6 +1,7 @@
 package org.octopusden.octopus.releng;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
 import org.junit.jupiter.api.Test;
 import org.octopusden.releng.versions.VersionNames;
@@ -40,14 +41,16 @@ class JiraComponentVersionSerializerTest {
     void testSerializeLegacyFormat() throws IOException {
         String legacyFormat = Utils.getJson(this.getClass().getResourceAsStream("/dependencies-legacy.json"));
         JiraComponentVersion jiraComponentVersion = jiraComponentVersionSerializer.deserialize(legacyFormat);
-        assertEquals(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER), jiraComponentVersion);
+        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER);
+        assertEquals(expected, jiraComponentVersion);
     }
 
     @Test
     void testSerializeNewFormat() throws IOException {
         String newFormat = Utils.getJson(this.getClass().getResourceAsStream("/dependencies-new.json"));
         JiraComponentVersion jiraComponentVersion = jiraComponentVersionSerializer.deserialize(newFormat);
-        assertEquals(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER), jiraComponentVersion);
+        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER);
+        assertEquals(expected, jiraComponentVersion);
     }
 
     @Test
