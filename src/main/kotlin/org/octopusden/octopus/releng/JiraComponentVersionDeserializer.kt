@@ -90,12 +90,14 @@ class JiraComponentVersionDeserializer(
         val releaseVersionFormat = getStringNode(node, "releaseVersionFormat")
         val buildVersionFormat = getStringNode(node, "buildVersionFormat")
         val lineVersionFormat = getStringNode(node, "lineVersionFormat")
+        val hotfixVersionFormat = getStringNode(node, "hotfixVersionFormat")
 
         return ComponentVersionFormat.create(
             majorVersionFormat,
             releaseVersionFormat,
             buildVersionFormat,
-            lineVersionFormat
+            lineVersionFormat,
+            hotfixVersionFormat
         )
     }
 

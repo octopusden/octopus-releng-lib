@@ -56,6 +56,11 @@ public class JiraComponentVersionFormatter {
         return matchesVersionFormat(jiraComponent, version, releaseVersionFormat, strict);
     }
 
+    public boolean matchesHotfixVersionFormat(JiraComponent jiraComponent, String version, boolean strict) {
+        String hotfixVersionFormat = jiraComponent.getComponentVersionFormat().getHotfixVersionFormat();
+        return matchesVersionFormat(jiraComponent, version, hotfixVersionFormat, strict);
+    }
+
     public boolean matchesReleaseVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
         return matchesReleaseVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
@@ -102,7 +107,8 @@ public class JiraComponentVersionFormatter {
 
     public boolean matchesAny(JiraComponent jiraComponent, String version, boolean strict) {
         return matchesReleaseVersionFormat(jiraComponent, version, strict) || matchesMajorVersionFormat(jiraComponent, version, strict) ||
-                matchesBuildVersionFormat(jiraComponent, version, strict) || matchesRCVersionFormat(jiraComponent, version, strict);
+                matchesBuildVersionFormat(jiraComponent, version, strict) || matchesRCVersionFormat(jiraComponent, version, strict) ||
+                matchesHotfixVersionFormat(jiraComponent, version, strict);
 
     }
 

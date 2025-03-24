@@ -22,7 +22,7 @@ class JiraComponentVersionFormatterTest {
 
     @Test
     void testGetJiraComponentVersion() {
-        assertEquals("testcomponent-2.15.1505.147-1128", jiraComponentVersion.getBuildVersion());
+        assertEquals("testcomponent-2.15.1505.147", jiraComponentVersion.getBuildVersion());
     }
 
     @Test
@@ -49,7 +49,7 @@ class JiraComponentVersionFormatterTest {
 
     @Test
     void testMatchesReleaseVersionFormat() {
-        assertTrue(jiraComponentVersionFormatter.matchesReleaseVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505-147"));
+        assertTrue(jiraComponentVersionFormatter.matchesReleaseVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505"));
     }
 
     @Test
@@ -59,7 +59,7 @@ class JiraComponentVersionFormatterTest {
 
     @Test
     void testMatchesBuildVersionFormat() {
-        assertTrue(jiraComponentVersionFormatter.matchesBuildVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505.147-1128"));
+        assertTrue(jiraComponentVersionFormatter.matchesBuildVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505.147"));
     }
 
     @Test
@@ -74,21 +74,26 @@ class JiraComponentVersionFormatterTest {
 
     @Test
     void testReleaseVersionMatchesAnyFormat() {
-        assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505-147"));
+        assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505"));
     }
 
     @Test
     void testRCVersionMatchesAnyFormat() {
-        assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505-147_RC"));
+        assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505_RC"));
     }
 
     @Test
     void testRCVersionMatchesRC() {
-        assertTrue(jiraComponentVersionFormatter.matchesRCVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505-147_RC"));
+        assertTrue(jiraComponentVersionFormatter.matchesRCVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505_RC"));
     }
 
     @Test
     void testBuildNumberMatchesAnyFormat() {
+        assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505.147-1128"));
+    }
+
+    @Test
+    void testHotfixMatchesAnyFormat() {
         assertTrue(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505.147-1128"));
     }
 
@@ -106,7 +111,7 @@ class JiraComponentVersionFormatterTest {
 
     private JiraComponentVersion getJiraComponentVersionWithNullBuildVersion() {
         ComponentVersionFormat componentVersionFormat = ComponentVersionFormat.create("$major.$minor", "$major.$minor.$service-$fix",
-                null, null);
+                null, null, null);
         JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true);
         ComponentVersion componentVersion = ComponentVersion.create("c1", "version");
         return new JiraComponentVersion(
