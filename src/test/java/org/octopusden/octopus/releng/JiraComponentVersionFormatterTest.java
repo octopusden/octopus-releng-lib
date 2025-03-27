@@ -98,6 +98,11 @@ class JiraComponentVersionFormatterTest {
     }
 
     @Test
+    void testHotfixMatchesHotfixFormat() {
+        assertTrue(jiraComponentVersionFormatter.matchesHotfixVersionFormat(jiraComponentVersion, "testcomponent-2.15.1505.147-1128"));
+    }
+
+    @Test
     void testIncorrectVersionDoesNotMatchesAnyFormat() {
         assertFalse(jiraComponentVersionFormatter.matchesAny(jiraComponentVersion, "testcomponent-2.15.1505.147.1128"));
     }
