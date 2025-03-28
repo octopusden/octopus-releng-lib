@@ -35,6 +35,9 @@ public class JiraComponentVersion {
     @JsonIgnore
     private String buildVersion = null;
 
+    @JsonIgnore
+    private String hotfixVersion = null;
+
     @JsonCreator
     public JiraComponentVersion(@JsonProperty("componentVersion") ComponentVersion componentVersion,
                                 @JsonProperty("component") JiraComponent component,
@@ -130,6 +133,17 @@ public class JiraComponentVersion {
             }
         }
         return buildVersion;
+    }
+
+    @JsonIgnore
+    public String getHotfixVersion() {
+        if (hotfixVersion == null) {
+            String hotfixVersionFormat = jiraComponentVersionFormatter.getHotfixVersionFormat(getComponent());
+            if (hotfixVersionFormat != null) {
+                hotfixVersion = jiraComponentVersionFormatter.getHotfixVersion(getComponent(), getVersion());
+            }
+        }
+        return hotfixVersion;
     }
 
 

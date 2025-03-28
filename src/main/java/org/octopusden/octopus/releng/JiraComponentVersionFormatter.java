@@ -31,6 +31,10 @@ public class JiraComponentVersionFormatter {
         return formatBuildVersionFormat(jiraComponent, version);
     }
 
+    public String getHotfixVersion(JiraComponent jiraComponent, String version) {
+        return formatHotfixVersionFormat(jiraComponent, version);
+    }
+
     public String getLineVersion(JiraComponentVersion jiraComponentVersion) {
         return getLineVersion(jiraComponentVersion.getComponent(), jiraComponentVersion.getVersion());
     }
@@ -59,6 +63,10 @@ public class JiraComponentVersionFormatter {
     public boolean matchesHotfixVersionFormat(JiraComponent jiraComponent, String version, boolean strict) {
         String hotfixVersionFormat = jiraComponent.getComponentVersionFormat().getHotfixVersionFormat();
         return matchesVersionFormat(jiraComponent, version, hotfixVersionFormat, strict);
+    }
+
+    public boolean matchesHotfixVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
+        return matchesHotfixVersionFormat(jiraComponentVersion.getComponent(), version, true);
     }
 
     public boolean matchesReleaseVersionFormat(JiraComponentVersion jiraComponentVersion, String version) {
@@ -136,6 +144,11 @@ public class JiraComponentVersionFormatter {
         return format(jiraComponent, buildVersionFormat, numericVersionFactory.create(version));
     }
 
+    public String formatHotfixVersionFormat(JiraComponent jiraComponent, String version) {
+        String hotfixVersionFormat = getHotfixVersionFormat(jiraComponent);
+        return format(jiraComponent, hotfixVersionFormat, numericVersionFactory.create(version));
+    }
+
     public String formatLineVersionFormat(JiraComponent jiraComponent, String version) {
         String lineVersionFormat = getLineVersionFormat(jiraComponent);
         return format(jiraComponent, lineVersionFormat, numericVersionFactory.create(version));
@@ -151,6 +164,13 @@ public class JiraComponentVersionFormatter {
         } else {
             return null;
         }
+    }
+
+    public String getHotfixVersionFormat(JiraComponent jiraComponent) {
+        if (jiraComponent != null) {
+            return jiraComponent.getComponentVersionFormat().getHotfixVersionFormat();
+        }
+        return null;
     }
 
     public String getLineVersionFormat(JiraComponent jiraComponent) {
