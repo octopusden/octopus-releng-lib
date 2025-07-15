@@ -71,6 +71,7 @@ public class JiraComponentVersionSerializer {
         }
     }
 
+    // todo - is there any usage of this method?
     public List<JiraComponentVersion> deserializeList(String jiraComponentVersionList) throws IOException {
         Validate.notNull(jiraComponentVersionList);
         jiraComponentVersionList = jiraComponentVersionList.replace("\n", "").replace("\r", "");
@@ -128,7 +129,7 @@ public class JiraComponentVersionSerializer {
         return new JiraComponentVersion(
                 ComponentVersion.create(componentName, releaseVersion),
                 jiraComponent,
-                jiraComponentVersionFormatter
+                jiraComponentVersionFormatter, false
         );
     }
 

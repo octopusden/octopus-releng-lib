@@ -18,7 +18,7 @@ class JiraComponentVersionFormatterTest {
             "serviceBranch", "service", "minor"
     );
     private final JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(VERSION_NAMES);
-    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter);
+    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter, false);
 
     @Test
     void testGetJiraComponentVersion() {
@@ -122,7 +122,8 @@ class JiraComponentVersionFormatterTest {
         return new JiraComponentVersion(
                 componentVersion,
                 jiraComponent,
-                jiraComponentVersionFormatter
+                jiraComponentVersionFormatter,
+                false
         );
     }
 }

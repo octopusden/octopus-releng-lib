@@ -23,6 +23,9 @@ public class JiraComponentVersion {
     @JsonIgnore
     private final JiraComponentVersionFormatter jiraComponentVersionFormatter;
 
+    @JsonProperty
+    private final boolean isHotfixEnabled;
+
     @JsonIgnore
     private String lineVersion = null;
 
@@ -41,10 +44,13 @@ public class JiraComponentVersion {
     @JsonCreator
     public JiraComponentVersion(@JsonProperty("componentVersion") ComponentVersion componentVersion,
                                 @JsonProperty("component") JiraComponent component,
-                                JiraComponentVersionFormatter jiraComponentVersionFormatter) {
+                                JiraComponentVersionFormatter jiraComponentVersionFormatter,
+                                @JsonProperty("component") Boolean isHotfixEnabled) {
         this.componentVersion = componentVersion;
         this.component = component;
         this.jiraComponentVersionFormatter = jiraComponentVersionFormatter;
+        this.isHotfixEnabled = isHotfixEnabled != null ? isHotfixEnabled : false; // Default to false if not specified
+
     }
 
 
