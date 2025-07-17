@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.octopusden.octopus.releng.JiraComponentVersionFormatter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.octopusden.octopus.releng.JiraComponentVersionFormatter;
+import org.octopusden.releng.versions.IVersionInfo;
+import org.octopusden.releng.versions.NumericVersionFactory;
+import org.octopusden.releng.versions.VersionNames;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -45,7 +48,7 @@ public class JiraComponentVersion {
     public JiraComponentVersion(@JsonProperty("componentVersion") ComponentVersion componentVersion,
                                 @JsonProperty("component") JiraComponent component,
                                 JiraComponentVersionFormatter jiraComponentVersionFormatter,
-                                @JsonProperty("component") Boolean isHotfixEnabled) {
+                                @JsonProperty("isHotfixEnabled") Boolean isHotfixEnabled) {
         this.componentVersion = componentVersion;
         this.component = component;
         this.jiraComponentVersionFormatter = jiraComponentVersionFormatter;
@@ -142,8 +145,61 @@ public class JiraComponentVersion {
     }
 
     @JsonIgnore
+    public String normalizeVersion(String version, VersionNames versionNames, boolean strict) {
+
+        if (component != null ) {
+            IVersionInfo numericVersion = new NumericVersionFactory(versionNames).create(version);
+            if (isHotfixEnabled && jiraComponentVersionFormatter.matchesHotfixVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getHotfixVersionFormat());
+            }
+            if (jiraComponentVersionFormatter.matchesBuildVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(jiraComponentVersionFormatter.getBuildVersionFormat(component));
+            }
+            if (jiraComponentVersionFormatter.matchesRCVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (jiraComponentVersionFormatter.matchesReleaseVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (jiraComponentVersionFormatter.matchesMajorVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getMajorVersionFormat());
+            }
+            if (jiraComponentVersionFormatter.matchesLineVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(jiraComponentVersionFormatter.getLineVersionFormat(component));
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public String getReleaseOrHotfixVersion() {
+        final String version;
+        if (null == getHotfixVersion()) {
+            version = getReleaseVersion();
+        } else {
+            version = getHotfixVersion();
+        }
+        return version;
+    }
+
+    @JsonIgnore
+    public boolean isHotfix() {
+        return getHotfixVersion() != null;
+    }
+
+    @JsonIgnore
+    public String getReleaseVersionForHotfix() {
+        if (getHotfixVersion() != null) {
+            return getReleaseVersion();
+        } else {
+            throw new IllegalStateException("Hotfix version is not set for component: " + getComponent().getDisplayName());
+        }
+    }
+
+
+    @JsonIgnore
     public String getHotfixVersion() {
-        if (hotfixVersion == null) {
+        if (isHotfixEnabled && hotfixVersion == null) {
             String hotfixVersionFormat = jiraComponentVersionFormatter.getHotfixVersionFormat(getComponent());
             if (hotfixVersionFormat != null) {
                 hotfixVersion = jiraComponentVersionFormatter.getHotfixVersion(getComponent(), getVersion());
@@ -151,7 +207,6 @@ public class JiraComponentVersion {
         }
         return hotfixVersion;
     }
-
 
     @JsonIgnore
     public String getRCVersion() {
@@ -187,6 +242,8 @@ public class JiraComponentVersion {
                 ", minorVersion='" + getMajorVersion() + '\'' +
                 ", releaseVersion='" + getReleaseVersion() + '\'' +
                 ", buildVersion='" + getBuildVersion() + '\'' +
+                ", hotfixVersion='" + getHotfixVersion() + '\'' +
+                ", isHotfixEnabled=" + isHotfixEnabled +
                 '}';
     }
 }
