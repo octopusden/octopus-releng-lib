@@ -16,13 +16,13 @@ class JiraComponentVersionTest {
 
     @Test
     fun testGetLineVersionWhenFormatIsNotSpecified() {
-        val jiraComponentVersion: JiraComponentVersion = getJiraComponentVersionWithoutLineVersionFormat(jiraComponentVersionFormatter)
+        val jiraComponentVersion: JiraComponentVersion = getJiraComponentVersionWithoutLineVersionFormat(jiraComponentVersionFormatter, false)
         assertEquals(jiraComponentVersion.majorVersion, jiraComponentVersion.lineVersion)
     }
 
     @Test
     fun testGetLineVersionWhenFormatIsSpecified() {
-        val jiraComponentVersion: JiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter)
+        val jiraComponentVersion: JiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter, false)
         assertEquals("testcomponent-Line.2.15", jiraComponentVersion.lineVersion)
     }
 }

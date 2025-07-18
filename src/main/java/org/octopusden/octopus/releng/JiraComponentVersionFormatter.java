@@ -1,5 +1,6 @@
 package org.octopusden.octopus.releng;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.octopusden.octopus.releng.dto.ComponentInfo;
 import org.octopusden.octopus.releng.dto.JiraComponent;
@@ -207,5 +208,33 @@ public class JiraComponentVersionFormatter {
         return jiraComponent.getComponentInfo() != null &&
                 StringUtils.isNotBlank(jiraComponent.getComponentInfo().getVersionPrefix());
     }
+
+    @JsonIgnore
+    public String normalizeVersion(JiraComponent component, String version, VersionNames versionNames, boolean isHotfixEnabled,  boolean strict) {
+
+        if (component != null ) {
+            IVersionInfo numericVersion = new NumericVersionFactory(versionNames).create(version);
+            if (isHotfixEnabled && matchesHotfixVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getHotfixVersionFormat());
+            }
+            if (matchesBuildVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(getBuildVersionFormat(component));
+            }
+            if (matchesRCVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (matchesReleaseVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (matchesMajorVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getMajorVersionFormat());
+            }
+            if (matchesLineVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(getLineVersionFormat(component));
+            }
+        }
+        return null;
+    }
+
 
 }

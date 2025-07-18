@@ -25,14 +25,14 @@ class JiraComponentVersionSerializerTest {
 
     @Test
     void testSerialize() throws Exception {
-        JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER);
+        JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER, false);
         String jiraComponentVersionJson = jiraComponentVersionSerializer.serialize(jiraComponentVersion, true);
         assertEquals(jiraComponentVersion, jiraComponentVersionSerializer.deserialize(jiraComponentVersionJson));
     }
 
     @Test
     void testSerializeList() throws IOException {
-        List<JiraComponentVersion> jiraComponentVersionList = Collections.singletonList(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER));
+        List<JiraComponentVersion> jiraComponentVersionList = Collections.singletonList(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER, false));
         String jiraComponentVersionJson = jiraComponentVersionSerializer.serializeList(jiraComponentVersionList);
         assertEquals(jiraComponentVersionList, jiraComponentVersionSerializer.deserializeList(jiraComponentVersionJson));
     }
@@ -41,7 +41,7 @@ class JiraComponentVersionSerializerTest {
     void testSerializeLegacyFormat() throws IOException {
         String legacyFormat = Utils.getJson(this.getClass().getResourceAsStream("/dependencies-legacy.json"));
         JiraComponentVersion jiraComponentVersion = jiraComponentVersionSerializer.deserialize(legacyFormat);
-        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER);
+        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER, false);
         assertEquals(expected, jiraComponentVersion);
     }
 
@@ -49,7 +49,7 @@ class JiraComponentVersionSerializerTest {
     void testSerializeNewFormat() throws IOException {
         String newFormat = Utils.getJson(this.getClass().getResourceAsStream("/dependencies-new.json"));
         JiraComponentVersion jiraComponentVersion = jiraComponentVersionSerializer.deserialize(newFormat);
-        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER);
+        JiraComponentVersion expected = getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER, false);
         assertEquals(expected, jiraComponentVersion);
     }
 
@@ -57,7 +57,7 @@ class JiraComponentVersionSerializerTest {
     void testValidJson() throws JsonProcessingException {
         assertFalse(jiraComponentVersionSerializer.isValidJSON("asd:$major.$minor:$major.$minor.$service:2.0.1"));
         assertTrue(jiraComponentVersionSerializer.isValidJSON("{\"id\": \"295cd59f-4033-438c-9bf4-c571829f134e\"}"));
-        String jiraComponentVersionJson = jiraComponentVersionSerializer.serialize(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER));
+        String jiraComponentVersionJson = jiraComponentVersionSerializer.serialize(getJiraComponentVersion(JIRA_COMPONENT_VERSION_FORMATTER, false));
         assertTrue(jiraComponentVersionSerializer.isValidJSON(jiraComponentVersionJson));
     }
 }

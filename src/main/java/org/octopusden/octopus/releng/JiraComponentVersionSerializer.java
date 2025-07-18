@@ -128,7 +128,7 @@ public class JiraComponentVersionSerializer {
         return new JiraComponentVersion(
                 ComponentVersion.create(componentName, releaseVersion),
                 jiraComponent,
-                jiraComponentVersionFormatter
+                jiraComponentVersionFormatter, false
         );
     }
 
