@@ -23,6 +23,7 @@ public class JiraComponentVersion {
 
     @JsonProperty
     private final JiraComponent component;
+
     @JsonIgnore
     private final JiraComponentVersionFormatter jiraComponentVersionFormatter;
 
@@ -158,6 +159,11 @@ public class JiraComponentVersion {
     @JsonIgnore
     public String getRCVersion() {
         return getReleaseVersion() + RC_SUFFIX;
+    }
+
+    @JsonIgnore
+    public boolean isHotfixEnabled() {
+        return isHotfixEnabled;
     }
 
     @Override
