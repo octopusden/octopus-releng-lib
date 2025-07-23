@@ -209,11 +209,10 @@ public class JiraComponentVersionFormatter {
                 StringUtils.isNotBlank(jiraComponent.getComponentInfo().getVersionPrefix());
     }
 
-    @JsonIgnore
     public String normalizeVersion(JiraComponent component, String version, VersionNames versionNames, boolean isHotfixEnabled,  boolean strict) {
 
         if (component != null ) {
-            IVersionInfo numericVersion = new NumericVersionFactory(versionNames).create(version);
+            IVersionInfo numericVersion = numericVersionFactory.create(version);
             if (isHotfixEnabled && matchesHotfixVersionFormat(component, version, strict)) {
                 return numericVersion.formatVersion(component.getComponentVersionFormat().getHotfixVersionFormat());
             }
