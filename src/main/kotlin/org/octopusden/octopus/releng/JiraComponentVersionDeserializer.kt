@@ -25,8 +25,7 @@ class JiraComponentVersionDeserializer(
         val componentVersion = getComponentVersion(node)
         val jiraComponent = getJiraComponent(node)
         val jiraComponentVersionFormatter = JiraComponentVersionFormatter(versionNames)
-        val isHotFixEnabled = getIsHotFixEnabled(node)
-        return JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter, isHotFixEnabled)
+        return JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter)
     }
 
     private fun getIsHotFixEnabled(node: JsonNode): Boolean {
@@ -77,13 +76,15 @@ class JiraComponentVersionDeserializer(
         val componentVersionFormat = getComponentVersionFormat(node)
         val componentInfo = getComponentInfo(node)
         val technical = getBooleanNode(node, "technical")
+        val isHotFixEnabled = getIsHotFixEnabled(node)
 
         return JiraComponent(
             projectKeyNode.toString(),
             getDisplayName(node),
             componentVersionFormat,
             componentInfo,
-            technical
+            technical,
+            isHotFixEnabled
         )
 
     }

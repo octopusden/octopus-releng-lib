@@ -24,9 +24,6 @@ public class JiraComponentVersion {
     @JsonIgnore
     private final JiraComponentVersionFormatter jiraComponentVersionFormatter;
 
-    @JsonProperty
-    private final boolean isHotfixEnabled;
-
     @JsonIgnore
     private String lineVersion = null;
 
@@ -45,13 +42,10 @@ public class JiraComponentVersion {
     @JsonCreator
     public JiraComponentVersion(@JsonProperty("componentVersion") ComponentVersion componentVersion,
                                 @JsonProperty("component") JiraComponent component,
-                                JiraComponentVersionFormatter jiraComponentVersionFormatter,
-                                @JsonProperty("isHotfixEnabled") Boolean isHotfixEnabled) {
+                                JiraComponentVersionFormatter jiraComponentVersionFormatter) {
         this.componentVersion = componentVersion;
         this.component = component;
         this.jiraComponentVersionFormatter = jiraComponentVersionFormatter;
-        this.isHotfixEnabled = isHotfixEnabled != null ? isHotfixEnabled : false; // Default to false if not specified
-
     }
 
 
@@ -144,7 +138,7 @@ public class JiraComponentVersion {
 
     @JsonIgnore
     public String getHotfixVersion() {
-        if (isHotfixEnabled && hotfixVersion == null) {
+        if (component.isHotfixEnabled() && hotfixVersion == null) {
             String hotfixVersionFormat = jiraComponentVersionFormatter.getHotfixVersionFormat(getComponent());
             if (hotfixVersionFormat != null) {
                 hotfixVersion = jiraComponentVersionFormatter.getHotfixVersion(getComponent(), getVersion());
@@ -156,11 +150,6 @@ public class JiraComponentVersion {
     @JsonIgnore
     public String getRCVersion() {
         return getReleaseVersion() + RC_SUFFIX;
-    }
-
-    @JsonIgnore
-    public boolean isHotfixEnabled() {
-        return isHotfixEnabled;
     }
 
     @Override
@@ -193,7 +182,6 @@ public class JiraComponentVersion {
                 ", releaseVersion='" + getReleaseVersion() + '\'' +
                 ", buildVersion='" + getBuildVersion() + '\'' +
                 ", hotfixVersion='" + getHotfixVersion() + '\'' +
-                ", isHotfixEnabled=" + isHotfixEnabled +
                 '}';
     }
 }

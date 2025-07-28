@@ -1,6 +1,7 @@
 package org.octopusden.octopus.releng.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.octopusden.releng.versions.ComponentVersionFormat;
@@ -13,15 +14,19 @@ public class JiraComponent {
     private final ComponentVersionFormat componentVersionFormat;
     private final ComponentInfo componentInfo;
     private final boolean technical;
+    private final boolean isHotfixEnabled;
+
 
     @JsonCreator
     public JiraComponent(@JsonProperty("projectKey") String projectKey, @JsonProperty("displayName") String displayName, @JsonProperty("componentVersionFormat") ComponentVersionFormat componentVersionFormat,
-                         @JsonProperty("componentInfo") ComponentInfo componentInfo, @JsonProperty("technical") boolean technical) {
+                         @JsonProperty("componentInfo") ComponentInfo componentInfo, @JsonProperty("technical") boolean technical,
+                         @JsonProperty("isHotfixEnabled") Boolean isHotfixEnabled) {
         this.projectKey = projectKey;
         this.displayName = displayName;
         this.componentVersionFormat = componentVersionFormat;
         this.componentInfo = componentInfo;
         this.technical = technical;
+        this.isHotfixEnabled = isHotfixEnabled != null ? isHotfixEnabled : false; // Default to false if not specified
     }
 
     public String getProjectKey() {
@@ -42,6 +47,10 @@ public class JiraComponent {
 
     public boolean isTechnical() {
         return technical;
+    }
+
+    public boolean isHotfixEnabled() {
+        return isHotfixEnabled;
     }
 
     @Override
@@ -79,6 +88,7 @@ public class JiraComponent {
                 ", componentVersionFormat=" + componentVersionFormat +
                 ", componentInfo=" + componentInfo +
                 ", technical=" + technical +
+                ", isHotfixEnabled=" + isHotfixEnabled +
                 '}';
     }
 }

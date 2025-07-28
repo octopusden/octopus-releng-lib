@@ -123,12 +123,12 @@ public class JiraComponentVersionSerializer {
             componentName = componentItems[0];
         }
 
-        JiraComponent jiraComponent = new JiraComponent(projectKey, "", versionFormat, null, false);
+        JiraComponent jiraComponent = new JiraComponent(projectKey, "", versionFormat, null, false, false);
         JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(versionNames);
         return new JiraComponentVersion(
                 ComponentVersion.create(componentName, releaseVersion),
                 jiraComponent,
-                jiraComponentVersionFormatter, false
+                jiraComponentVersionFormatter
         );
     }
 

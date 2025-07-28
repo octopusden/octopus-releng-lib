@@ -117,13 +117,12 @@ class JiraComponentVersionFormatterTest {
     private JiraComponentVersion getJiraComponentVersionWithNullBuildVersion() {
         ComponentVersionFormat componentVersionFormat = ComponentVersionFormat.create("$major.$minor", "$major.$minor.$service-$fix",
                 null, null, null);
-        JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true);
+        JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true, false);
         ComponentVersion componentVersion = ComponentVersion.create("c1", "version");
         return new JiraComponentVersion(
                 componentVersion,
                 jiraComponent,
-                jiraComponentVersionFormatter,
-                false
+                jiraComponentVersionFormatter
         );
     }
 }
