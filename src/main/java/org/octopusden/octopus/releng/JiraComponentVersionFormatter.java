@@ -1,6 +1,5 @@
 package org.octopusden.octopus.releng;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.octopusden.octopus.releng.dto.ComponentInfo;
 import org.octopusden.octopus.releng.dto.JiraComponent;
