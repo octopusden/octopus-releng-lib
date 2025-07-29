@@ -142,7 +142,7 @@ class JiraComponentVersionDeserializer(
         private const val COMPONENT = "component"
         private const val COMPONENT_VERSION_FORMAT = "componentVersionFormat"
         private const val COMPONENT_VERSION = "componentVersion"
-        private const val HOT_FIX_ENABLED = "isHotFixEnabled"
+        private const val HOT_FIX_ENABLED = "hotfixEnabled"
         private const val CUSTOMER_INFO = "customerInfo"
         private const val DISPLAY_NAME = "displayName"
     }
