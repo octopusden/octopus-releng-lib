@@ -66,6 +66,7 @@ public class JiraComponent {
                 .append(componentVersionFormat, that.componentVersionFormat)
                 .append(componentInfo, that.componentInfo)
                 .append(technical, that.technical)
+                .append(isHotfixEnabled, that.isHotfixEnabled)
                 .isEquals();
     }
 
@@ -77,6 +78,7 @@ public class JiraComponent {
                 .append(componentVersionFormat)
                 .append(componentInfo)
                 .append(technical)
+                .append(isHotfixEnabled)
                 .toHashCode();
     }
 
