@@ -13,19 +13,19 @@ public class JiraComponent {
     private final ComponentVersionFormat componentVersionFormat;
     private final ComponentInfo componentInfo;
     private final boolean technical;
-    private final boolean isHotfixEnabled;
+    private final boolean hotfixEnabled;
 
 
     @JsonCreator
     public JiraComponent(@JsonProperty("projectKey") String projectKey, @JsonProperty("displayName") String displayName, @JsonProperty("componentVersionFormat") ComponentVersionFormat componentVersionFormat,
                          @JsonProperty("componentInfo") ComponentInfo componentInfo, @JsonProperty("technical") boolean technical,
-                         @JsonProperty("isHotfixEnabled") Boolean isHotfixEnabled) {
+                         @JsonProperty("hotfixEnabled") Boolean hotfixEnabled) {
         this.projectKey = projectKey;
         this.displayName = displayName;
         this.componentVersionFormat = componentVersionFormat;
         this.componentInfo = componentInfo;
         this.technical = technical;
-        this.isHotfixEnabled = isHotfixEnabled != null ? isHotfixEnabled : false; // Default to false if not specified
+        this.hotfixEnabled = hotfixEnabled != null ? hotfixEnabled : false; // Default to false if not specified
     }
 
     public String getProjectKey() {
@@ -49,7 +49,7 @@ public class JiraComponent {
     }
 
     public boolean isHotfixEnabled() {
-        return isHotfixEnabled;
+        return hotfixEnabled;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class JiraComponent {
                 .append(componentVersionFormat, that.componentVersionFormat)
                 .append(componentInfo, that.componentInfo)
                 .append(technical, that.technical)
-                .append(isHotfixEnabled, that.isHotfixEnabled)
+                .append(hotfixEnabled, that.hotfixEnabled)
                 .isEquals();
     }
 
@@ -77,7 +77,7 @@ public class JiraComponent {
                 .append(componentVersionFormat)
                 .append(componentInfo)
                 .append(technical)
-                .append(isHotfixEnabled)
+                .append(hotfixEnabled)
                 .toHashCode();
     }
 
@@ -89,7 +89,7 @@ public class JiraComponent {
                 ", componentVersionFormat=" + componentVersionFormat +
                 ", componentInfo=" + componentInfo +
                 ", technical=" + technical +
-                ", isHotfixEnabled=" + isHotfixEnabled +
+                ", isHotfixEnabled=" + hotfixEnabled +
                 '}';
     }
 }
