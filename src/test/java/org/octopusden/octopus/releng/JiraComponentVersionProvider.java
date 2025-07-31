@@ -8,7 +8,7 @@ import org.octopusden.releng.versions.ComponentVersionFormat;
 
 public class JiraComponentVersionProvider {
 
-    public static JiraComponentVersion getJiraComponentVersion(JiraComponentVersionFormatter jiraComponentVersionFormatter) {
+    public static JiraComponentVersion getJiraComponentVersion(JiraComponentVersionFormatter jiraComponentVersionFormatter, Boolean isHotfixEnabled) {
         ComponentVersionFormat componentVersionFormat = ComponentVersionFormat.create(
                 "$major.$minor",
                 "$major.$minor.$service",
@@ -16,16 +16,16 @@ public class JiraComponentVersionProvider {
                 "Line.$major.$minor",
                 "$major.$minor.$service.$fix-$build");
         ComponentInfo componentInfo = new ComponentInfo("testcomponent", "$versionPrefix-$baseVersionFormat");
-        JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true);
+        JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true, isHotfixEnabled);
         ComponentVersion componentVersion = ComponentVersion.create("app-testcomponent", "2.15.1505.147-1128");
         return new JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter);
     }
 
-    public static JiraComponentVersion getJiraComponentVersionWithoutLineVersionFormat(JiraComponentVersionFormatter jiraComponentVersionFormatter) {
+    public static JiraComponentVersion getJiraComponentVersionWithoutLineVersionFormat(JiraComponentVersionFormatter jiraComponentVersionFormatter, Boolean isHotfixEnabled) {
         ComponentVersionFormat componentVersionFormat = ComponentVersionFormat.create("$major.$minor", "$major.$minor.$service-$fix",
                 "$major.$minor.$service.$fix-$build", null, null);
         ComponentInfo componentInfo = new ComponentInfo("testcomponent", "$versionPrefix-$baseVersionFormat");
-        JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true);
+        JiraComponent jiraComponent = new JiraComponent("APP", "TestComponent Application", componentVersionFormat, componentInfo, true, isHotfixEnabled);
         ComponentVersion componentVersion = ComponentVersion.create("app-testcomponent", "2.15.1505.147-1128");
         return new JiraComponentVersion(
                 componentVersion,

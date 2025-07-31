@@ -18,7 +18,7 @@ class JiraComponentVersionFormatterTest {
             "serviceBranch", "service", "minor"
     );
     private final JiraComponentVersionFormatter jiraComponentVersionFormatter = new JiraComponentVersionFormatter(VERSION_NAMES);
-    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter);
+    private final JiraComponentVersion jiraComponentVersion = getJiraComponentVersion(jiraComponentVersionFormatter, false);
 
     @Test
     void testGetJiraComponentVersion() {
@@ -117,7 +117,7 @@ class JiraComponentVersionFormatterTest {
     private JiraComponentVersion getJiraComponentVersionWithNullBuildVersion() {
         ComponentVersionFormat componentVersionFormat = ComponentVersionFormat.create("$major.$minor", "$major.$minor.$service-$fix",
                 null, null, null);
-        JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true);
+        JiraComponent jiraComponent = new JiraComponent("C1", "C1", componentVersionFormat, null, true, false);
         ComponentVersion componentVersion = ComponentVersion.create("c1", "version");
         return new JiraComponentVersion(
                 componentVersion,

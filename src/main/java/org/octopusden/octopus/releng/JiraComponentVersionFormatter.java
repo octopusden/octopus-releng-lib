@@ -208,4 +208,30 @@ public class JiraComponentVersionFormatter {
                 StringUtils.isNotBlank(jiraComponent.getComponentInfo().getVersionPrefix());
     }
 
+    public String normalizeVersion(JiraComponent component, String version, boolean strict, boolean hotfixEnabled) {
+
+        if (component != null) {
+            IVersionInfo numericVersion = numericVersionFactory.create(version);
+            if (hotfixEnabled && matchesHotfixVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getHotfixVersionFormat());
+            }
+            if (matchesBuildVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(getBuildVersionFormat(component));
+            }
+            if (matchesRCVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (matchesReleaseVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getReleaseVersionFormat());
+            }
+            if (matchesMajorVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(component.getComponentVersionFormat().getMajorVersionFormat());
+            }
+            if (matchesLineVersionFormat(component, version, strict)) {
+                return numericVersion.formatVersion(getLineVersionFormat(component));
+            }
+        }
+        return null;
+    }
+
 }

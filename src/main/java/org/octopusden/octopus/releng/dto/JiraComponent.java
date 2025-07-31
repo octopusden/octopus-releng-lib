@@ -13,15 +13,19 @@ public class JiraComponent {
     private final ComponentVersionFormat componentVersionFormat;
     private final ComponentInfo componentInfo;
     private final boolean technical;
+    private final boolean hotfixEnabled;
+
 
     @JsonCreator
     public JiraComponent(@JsonProperty("projectKey") String projectKey, @JsonProperty("displayName") String displayName, @JsonProperty("componentVersionFormat") ComponentVersionFormat componentVersionFormat,
-                         @JsonProperty("componentInfo") ComponentInfo componentInfo, @JsonProperty("technical") boolean technical) {
+                         @JsonProperty("componentInfo") ComponentInfo componentInfo, @JsonProperty("technical") boolean technical,
+                         @JsonProperty("hotfixEnabled") Boolean hotfixEnabled) {
         this.projectKey = projectKey;
         this.displayName = displayName;
         this.componentVersionFormat = componentVersionFormat;
         this.componentInfo = componentInfo;
         this.technical = technical;
+        this.hotfixEnabled = hotfixEnabled != null ? hotfixEnabled : false; // Default to false if not specified
     }
 
     public String getProjectKey() {
@@ -44,6 +48,10 @@ public class JiraComponent {
         return technical;
     }
 
+    public boolean isHotfixEnabled() {
+        return hotfixEnabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,6 +65,7 @@ public class JiraComponent {
                 .append(componentVersionFormat, that.componentVersionFormat)
                 .append(componentInfo, that.componentInfo)
                 .append(technical, that.technical)
+                .append(hotfixEnabled, that.hotfixEnabled)
                 .isEquals();
     }
 
@@ -68,6 +77,7 @@ public class JiraComponent {
                 .append(componentVersionFormat)
                 .append(componentInfo)
                 .append(technical)
+                .append(hotfixEnabled)
                 .toHashCode();
     }
 
@@ -79,6 +89,7 @@ public class JiraComponent {
                 ", componentVersionFormat=" + componentVersionFormat +
                 ", componentInfo=" + componentInfo +
                 ", technical=" + technical +
+                ", isHotfixEnabled=" + hotfixEnabled +
                 '}';
     }
 }
