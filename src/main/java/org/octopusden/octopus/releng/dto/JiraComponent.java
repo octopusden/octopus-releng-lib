@@ -71,9 +71,11 @@ public class JiraComponent {
 
     @Override
     public int hashCode() {
+        // displayName is intentionally absent, mirroring equals: it is a display label, not part
+        // of a component's identity. Including it here while equals excludes it would break the
+        // equals/hashCode contract and make hash-based collections of JiraComponent unsound.
         return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
                 .append(projectKey)
-                .append(displayName)
                 .append(componentVersionFormat)
                 .append(componentInfo)
                 .append(technical)
