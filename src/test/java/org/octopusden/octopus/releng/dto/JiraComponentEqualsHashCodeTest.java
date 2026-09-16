@@ -1,5 +1,7 @@
 package org.octopusden.octopus.releng.dto;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.octopusden.releng.versions.ComponentVersionFormat;
@@ -67,5 +69,16 @@ class JiraComponentEqualsHashCodeTest {
         set.add(b);
 
         assertEquals(2, set.size());
+    }
+
+    @Test
+    @DisplayName("equals/hashCode contract holds for every field combination, with displayName the one declared exclusion")
+    void contractHoldsForAllFields() {
+        // Fails on the pre-fix hashCode with "hashCode relies on displayName, but equals does not";
+        // also catches the reverse drift if a field is later added to one method and not the other.
+        EqualsVerifier.forClass(JiraComponent.class)
+                .withIgnoredFields("displayName")
+                .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE)
+                .verify();
     }
 }
