@@ -2,8 +2,6 @@ package org.octopusden.octopus.releng
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.net.URI
-import java.net.URL
 import java.util.Date
 
 internal class ChangesetTest {
