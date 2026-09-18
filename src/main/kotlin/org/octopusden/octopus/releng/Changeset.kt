@@ -5,17 +5,26 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.octopusden.octopus.releng.utils.toPrettyString
 import java.net.URI
 import java.net.URISyntaxException
-import java.util.*
+import java.util.Date
 
-data class Revision(val path: String)
+data class Revision(
+    val path: String,
+)
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class SmallChangeSet(val id: String, val repository: String, val date: Date, val author: String, val comment: String) {
-
-    fun shortenMessage(message: String) = if (message.length > 15) {
-        message.substring(0, 14).trim() + ".."
-    } else {
-        message
-    }
+open class SmallChangeSet(
+    val id: String,
+    val repository: String,
+    val date: Date,
+    val author: String,
+    val comment: String,
+) {
+    fun shortenMessage(message: String) =
+        if (message.length > 15) {
+            message.substring(0, 14).trim() + ".."
+        } else {
+            message
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -39,28 +48,26 @@ open class SmallChangeSet(val id: String, val repository: String, val date: Date
         return result
     }
 
-    override fun toString(): String {
-        return "CS('$repository':${date.toPrettyString()}:$author cmt='${shortenMessage(comment)}')"
-    }
+    override fun toString(): String = "CS('$repository':${date.toPrettyString()}:$author cmt='${shortenMessage(comment)}')"
 }
 
 open class Changeset(
-        id: String,
-        repository: String,
-        val branch: String,
-        date: Date,
-        author: String,
-        val url: String,
-        comment: String,
-        val revisions: Collection<Revision> = emptyList()
+    id: String,
+    repository: String,
+    val branch: String,
+    date: Date,
+    author: String,
+    val url: String,
+    comment: String,
+    val revisions: Collection<Revision> = emptyList(),
 ) : SmallChangeSet(id, repository, date, author, comment) {
-
-    override fun toString(): String {
-        return "CS('${repository.shortRepoPath()}':$branch:${date.toPrettyString()}:$author cmt='${shortenMessage(comment)}')"
-    }
+    override fun toString(): String =
+        "CS('${repository.shortRepoPath()}':$branch:${date.toPrettyString()}:$author cmt='${shortenMessage(comment)}')"
 
     fun toStringWithRevision() =
-            "CS('${repository.shortRepoPath()}':$branch:${date.toPrettyString()}:$author, cmt='${shortenMessage(comment)}', rev=${revisions.joinToString { "{${it.path}}" }})"
+        "CS('${repository.shortRepoPath()}':$branch:${date.toPrettyString()}:$author, cmt='${shortenMessage(
+            comment,
+        )}', rev=${revisions.joinToString { "{${it.path}}" }})"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -83,13 +90,18 @@ open class Changeset(
     }
 }
 
-fun String.shortRepoPath() : String {
-    return try {
-        URI(this).path
+// The fallback is the contract, not an oversight: a string that is not a URI is returned unchanged,
+// which is what both tests in ChangesetTest pin. There is nothing to report and nowhere to report it
+// from - this file has no logger and the caller only wants a display string.
+@Suppress("SwallowedException")
+fun String.shortRepoPath(): String =
+    try {
+        // getPath() is null for an opaque URI - "mailto:a@b.com", "urn:x" - which parses without
+        // throwing, so the null fallback is not the same case as the catch below.
+        URI(this).path ?: this
     } catch (e: URISyntaxException) {
         this
     }
-}
 
 object ChangesetSerializer {
     private val mapper = jacksonObjectMapper()

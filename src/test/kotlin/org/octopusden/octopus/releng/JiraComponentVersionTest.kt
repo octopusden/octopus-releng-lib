@@ -8,15 +8,18 @@ import org.octopusden.octopus.releng.dto.JiraComponentVersion
 import org.octopusden.releng.versions.VersionNames
 
 class JiraComponentVersionTest {
-    private val versionNames = VersionNames(
-        "serviceBranch", "service", "minor"
-    )
+    private val versionNames =
+        VersionNames(
+            "serviceBranch",
+            "service",
+            "minor",
+        )
     private val jiraComponentVersionFormatter = JiraComponentVersionFormatter(versionNames)
-
 
     @Test
     fun testGetLineVersionWhenFormatIsNotSpecified() {
-        val jiraComponentVersion: JiraComponentVersion = getJiraComponentVersionWithoutLineVersionFormat(jiraComponentVersionFormatter, false)
+        val jiraComponentVersion: JiraComponentVersion =
+            getJiraComponentVersionWithoutLineVersionFormat(jiraComponentVersionFormatter, false)
         assertEquals(jiraComponentVersion.majorVersion, jiraComponentVersion.lineVersion)
     }
 

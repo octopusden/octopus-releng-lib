@@ -2,7 +2,11 @@ package org.octopusden.octopus.releng
 
 import org.octopusden.octopus.releng.dto.JiraComponentVersion
 
-enum class VersionType(val name2Display: String, val action: String, val column: String) {
+enum class VersionType(
+    val name2Display: String,
+    val action: String,
+    val column: String,
+) {
     BUILD("Build", "build", "BUILD_VERSION") {
         override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.buildVersion
     },
@@ -10,13 +14,10 @@ enum class VersionType(val name2Display: String, val action: String, val column:
         override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.rcVersion
     },
     RELEASE("Release", "release", "RELEASE_VERSION") {
-        override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.releaseVersion;
-    };
+        override fun getVersion(jiraComponentVersion: JiraComponentVersion) = jiraComponentVersion.releaseVersion
+    }, ;
 
     abstract fun getVersion(jiraComponentVersion: JiraComponentVersion): String
 
-    override fun toString(): String {
-        return name2Display;
-    }
+    override fun toString(): String = name2Display
 }
-
