@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.octopusden.octopus</groupId>
         <artifactId>octopus-parent</artifactId>
-        <version>2.0.10</version>
+        <version>2.1.0</version>
     </parent>
 
     <groupId>org.octopusden.octopus.releng</groupId>
@@ -14,6 +14,21 @@
     <name>Octopus Releng Library</name>
 
     <properties>
+        <!-- Strict: with octopus-parent 2.1.0 this repository reports zero findings from every gate.
+             It has no effect on CI yet - that build runs on JDK 8, where the quality profiles do not
+             activate at all - but it is set while the repository is clean, so the gates bite the moment
+             the build JDK moves to 11+ rather than after drift has accumulated. -->
+        <octopus.quality.failOnViolation>true</octopus.quality.failOnViolation>
+        <!-- Ratchet, not the inherited 0.10: LINE coverage here is 63%, so the default floor could not
+             fail on anything short of deleting the tests. Set just below the real figure and raised as
+             coverage improves; never lowered. -->
+        <octopus.coverage.minimumLine>0.60</octopus.coverage.minimumLine>
+        <!-- Mutation score is 40% here (329 mutants, 132 killed) against 63% line coverage - the gap is the
+             point: coverage counts lines executed, this counts assertions that would notice a change. The
+             floor is set below the measured figure and raised as tests improve. PIT is opt-in
+             (-Poctopus-mutation) and runs in no CI job yet, so this records the baseline rather than
+             gating anything. -->
+        <octopus.mutation.threshold>35</octopus.mutation.threshold>
         <kotlin.version>1.6.21</kotlin.version>
         <spek.version>2.0.9</spek.version>
     </properties>

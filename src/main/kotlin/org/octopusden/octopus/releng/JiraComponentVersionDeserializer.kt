@@ -12,10 +12,12 @@ import org.octopusden.releng.versions.ComponentVersionFormat
 import org.octopusden.releng.versions.VersionNames
 
 class JiraComponentVersionDeserializer(
-    private val versionNames: VersionNames
+    private val versionNames: VersionNames,
 ) : JsonDeserializer<JiraComponentVersion>() {
-
-    override fun deserialize(jsonParser: JsonParser, context: DeserializationContext): JiraComponentVersion {
+    override fun deserialize(
+        jsonParser: JsonParser,
+        context: DeserializationContext,
+    ): JiraComponentVersion {
         val node: JsonNode = jsonParser.codec!!.readTree(jsonParser)
         val jiraComponentVersion = getJiraComponentVersion(node)
         return jiraComponentVersion
@@ -28,20 +30,20 @@ class JiraComponentVersionDeserializer(
         return JiraComponentVersion(componentVersion, jiraComponent, jiraComponentVersionFormatter)
     }
 
-    private fun getIsHotFixEnabled(node: JsonNode): Boolean {
-        return if (node.get(HOT_FIX_ENABLED) != null) {
+    private fun getIsHotFixEnabled(node: JsonNode): Boolean =
+        if (node.get(HOT_FIX_ENABLED) != null) {
             node.get(HOT_FIX_ENABLED).booleanValue()
         } else {
             false
         }
-    }
 
     private fun getComponentVersion(node: JsonNode): ComponentVersion? {
-        val searchNode = if (node.get(COMPONENT_VERSION) != null) {
-            node.get(COMPONENT_VERSION)
-        } else {
-            node
-        }
+        val searchNode =
+            if (node.get(COMPONENT_VERSION) != null) {
+                node.get(COMPONENT_VERSION)
+            } else {
+                node
+            }
 
         val componentName = getStringNode(searchNode, "componentName")
         val version = getStringNode(searchNode, "version")
@@ -49,20 +51,22 @@ class JiraComponentVersionDeserializer(
         return componentVersion
     }
 
-
-    private fun getStringNode(node: JsonNode, name: String): String? {
-        return if (node.has(name)) {
+    private fun getStringNode(
+        node: JsonNode,
+        name: String,
+    ): String? =
+        if (node.has(name)) {
             val componentNameNode = node.get(name)
             assert(componentNameNode.isTextual)
             componentNameNode.asText()
         } else {
             null
         }
-    }
 
-    private fun getBooleanNode(node: JsonNode, name: String): Boolean {
-        return node.has(name) && node.get(name).isBoolean && node.get(name).asBoolean(false)
-    }
+    private fun getBooleanNode(
+        node: JsonNode,
+        name: String,
+    ): Boolean = node.has(name) && node.get(name).isBoolean && node.get(name).asBoolean(false)
 
     fun getJiraComponent(parentNode: JsonNode): JiraComponent? {
         if (!parentNode.has(COMPONENT)) {
@@ -84,9 +88,8 @@ class JiraComponentVersionDeserializer(
             componentVersionFormat,
             componentInfo,
             technical,
-            isHotFixEnabled
+            isHotFixEnabled,
         )
-
     }
 
     fun getComponentVersionFormat(parentNode: JsonNode): ComponentVersionFormat? {
@@ -107,17 +110,18 @@ class JiraComponentVersionDeserializer(
             releaseVersionFormat,
             buildVersionFormat,
             lineVersionFormat,
-            hotfixVersionFormat
+            hotfixVersionFormat,
         )
     }
 
     fun getComponentInfo(parentNode: JsonNode): ComponentInfo? {
-        val componentInfoNode = if (parentNode.has("componentInfo")) {
-            parentNode.get("componentInfo")
-        } else {
-            parentNode.get(CUSTOMER_INFO)
-        }
-        componentInfoNode ?: return null;
+        val componentInfoNode =
+            if (parentNode.has("componentInfo")) {
+                parentNode.get("componentInfo")
+            } else {
+                parentNode.get(CUSTOMER_INFO)
+            }
+        componentInfoNode ?: return null
 
         val versionPrefixNode = getStringNode(componentInfoNode, "versionPrefix")
         val versionFormatNode = getStringNode(componentInfoNode, "versionFormat")

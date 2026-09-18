@@ -1,7 +1,6 @@
 package org.octopusden.octopus.releng;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.octopusden.octopus.releng.dto.JiraComponent;
 import org.octopusden.octopus.releng.dto.JiraComponentVersion;
 import org.junit.jupiter.api.Test;
 import org.octopusden.releng.versions.VersionNames;

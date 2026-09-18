@@ -1,6 +1,8 @@
 package org.octopusden.octopus.releng
 
-class ValidationResult(val errors: MutableList<String> = mutableListOf()) {
+class ValidationResult(
+    val errors: MutableList<String> = mutableListOf(),
+) {
     val valid: Boolean
         get() = errors.isEmpty()
 

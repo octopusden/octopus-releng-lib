@@ -137,7 +137,9 @@ public class JiraComponentVersionSerializer {
         try {
             objectMapper.readTree(json);
             return true;
-        } catch (IOException ignore) {
+        } catch (IOException ignored) {
+            // Deliberately empty: this method IS the "is it parseable" predicate, so a parse failure
+            // is the answer, not an error. `ignored` is the name PMD recognises for that intent.
         }
         return false;
     }
