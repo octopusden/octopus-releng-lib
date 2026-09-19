@@ -12,11 +12,16 @@ permissions:
 
 jobs:
   quality:
-    # Checkstyle, PMD, SpotBugs, detekt, ktlint and the JaCoCo coverage floor come from
-    # octopus-parent, whose octopus-quality profile activates on <jdk>[11,)</jdk>. Compile and
-    # release run on JDK 8 (see build.yml and release.yml), so on those runs the profile never
-    # activates and no gate executes - the thresholds in pom.xml have never been enforced. This job
-    # exists to give them a JVM they run on; the artefacts it builds are thrown away.
+    # Checkstyle, PMD, detekt, ktlint and the JaCoCo coverage floor come from octopus-parent, whose
+    # octopus-quality profile activates on <jdk>[11,)</jdk>. Compile and release run on JDK 8 (see
+    # build.yml and release.yml), so on those runs the profile never activates and no gate executes -
+    # the thresholds in pom.xml have never been enforced. This job exists to give them a JVM they run
+    # on; the artefacts it builds are thrown away.
+    #
+    # SpotBugs is deliberately absent from that list: src/main/kotlin exists here, so the parent's
+    # Kotlin profile activates and sets spotbugs.skip=true, matching what the Gradle convention
+    # plugin does. No spotbugsXml.xml is produced. The src/main/java in this repository goes
+    # unanalysed by SpotBugs as a result - a parent-level design question, not one for this PR.
     uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.0.3
     with:
       java-version: '11'
