@@ -23,6 +23,6 @@ jobs:
     # Kotlin profile activates and sets spotbugs.skip=true, matching what the Gradle convention
     # plugin does. No spotbugsXml.xml is produced. The src/main/java in this repository goes
     # unanalysed by SpotBugs as a result - a parent-level design question, not one for this PR.
-    uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.0.3
+    uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.4.0
     with:
       java-version: '11'
