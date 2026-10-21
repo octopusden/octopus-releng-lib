@@ -7,6 +7,10 @@ on:
   workflow_call:
   workflow_dispatch:
 
+# `mvn package` reads the repository and nothing else.
+permissions:
+  contents: read
+
 jobs:
   run-build-and-deploy:
     uses: octopusden/octopus-base/.github/workflows/common-java-maven-build.yml@v3.0.3
